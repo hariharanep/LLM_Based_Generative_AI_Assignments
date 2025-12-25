@@ -1,0 +1,378 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: Url Summarizer
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.2.6@e2665624a156f52160927bceac9e169bd7e5ae6b936ae82575e14c90af390e6e
+    version: null
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1761025698682--1761026068603-target
+      source: '1761025698682'
+      sourceHandle: source
+      target: '1761026068603'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: tool
+      id: 1761024997810-source-1761027331508-target
+      source: '1761024997810'
+      sourceHandle: source
+      target: '1761027331508'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: code
+      id: 1761027331508-source-1761028715927-target
+      source: '1761027331508'
+      sourceHandle: source
+      target: '1761028715927'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1761028715927-source-1761025698682-target
+      source: '1761028715927'
+      sourceHandle: source
+      target: '1761025698682'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: User Input Url
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          default: Enter the web url you want me to provide a summary for...
+          hint: ''
+          label: Input URL
+          max_length: 256
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: url
+      height: 116
+      id: '1761024997810'
+      position:
+        x: 66.66306802738507
+        y: 297.2422079687029
+      positionAbsolute:
+        x: 66.66306802738507
+        y: 297.2422079687029
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: Summarize Web URL
+        model:
+          completion_params:
+            max_tokens: 512
+          mode: chat
+          name: gpt-4
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 2db1b3e0-9f3e-400c-a113-2fce66c7f252
+          role: system
+          text: You are a helpful web url summarizer. Analyze the provided web scraping
+            results for the web url and create a brief and concise summary of the
+            web url's contents.
+        - id: cae457a9-4532-491d-9e9f-3c5d1830755a
+          role: user
+          text: 'Web-Scraping Results: {{#1761028715927.processed_text#}}
+
+            Please provide a comprehensive summary of the web url''s contents with
+            the provided web-scraping results. '
+        selected: false
+        structured_output_enabled: false
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 116
+      id: '1761025698682'
+      position:
+        x: 871.9129202293107
+        y: 273.13618300805143
+      positionAbsolute:
+        x: 871.9129202293107
+        y: 273.13618300805143
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        desc: Web URL Summary
+        outputs:
+        - value_selector:
+          - '1761025698682'
+          - text
+          value_type: string
+          variable: summary
+        selected: false
+        title: End
+        type: end
+      height: 116
+      id: '1761026068603'
+      position:
+        x: 1177.45844702609
+        y: 305.0459241790664
+      positionAbsolute:
+        x: 1177.45844702609
+        y: 305.0459241790664
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        desc: Url Web Scraper
+        is_team_authorization: true
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: used for linking to webpages
+            ja_JP: used for linking to webpages
+            pt_BR: used for linking to webpages
+            zh_Hans: 用于链接到网页
+          label:
+            en_US: URL
+            ja_JP: URL
+            pt_BR: URL
+            zh_Hans: 网页链接
+          llm_description: url for scraping
+          max: null
+          min: null
+          name: url
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
+            like Gecko) Chrome/100.0.1000.0 Safari/537.36
+          form: form
+          human_description:
+            en_US: used for identifying the browser.
+            ja_JP: used for identifying the browser.
+            pt_BR: used for identifying the browser.
+            zh_Hans: 用于识别浏览器。
+          label:
+            en_US: User Agent
+            ja_JP: User Agent
+            pt_BR: User Agent
+            zh_Hans: User Agent
+          llm_description: null
+          max: null
+          min: null
+          name: user_agent
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: 'false'
+          form: form
+          human_description:
+            en_US: If true, the crawler will only return the page summary content.
+            ja_JP: If true, the crawler will only return the page summary content.
+            pt_BR: If true, the crawler will only return the page summary content.
+            zh_Hans: 如果启用，爬虫将仅返回页面摘要内容。
+          label:
+            en_US: Whether to generate summary
+            ja_JP: Whether to generate summary
+            pt_BR: Whether to generate summary
+            zh_Hans: 是否生成摘要
+          llm_description: null
+          max: null
+          min: null
+          name: generate_summary
+          options:
+          - icon: null
+            label:
+              en_US: 'Yes'
+              ja_JP: 'Yes'
+              pt_BR: 'Yes'
+              zh_Hans: 是
+            value: 'true'
+          - icon: null
+            label:
+              en_US: 'No'
+              ja_JP: 'No'
+              pt_BR: 'No'
+              zh_Hans: 否
+            value: 'false'
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: boolean
+        params:
+          generate_summary: ''
+          url: ''
+          user_agent: ''
+        provider_id: webscraper
+        provider_name: webscraper
+        provider_type: builtin
+        selected: false
+        title: Web Scraper
+        tool_configurations:
+          generate_summary:
+            type: constant
+            value: true
+          user_agent:
+            type: mixed
+            value: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
+              like Gecko) Chrome/100.0.1000.0 Safari/537.36
+        tool_description: A tool for scraping webpages.
+        tool_label: Web Scraper
+        tool_name: webscraper
+        tool_node_version: '2'
+        tool_parameters:
+          url:
+            type: mixed
+            value: '{{#1761024997810.url#}}'
+        type: tool
+      height: 142
+      id: '1761027331508'
+      position:
+        x: 381.9999999999999
+        y: 282
+      positionAbsolute:
+        x: 381.9999999999999
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "\ndef main(text: str) -> dict:\n    max_length = 8192\n    result =\
+          \ \"\"\n    if len(text) > max_length:\n        result = text[:max_length]\
+          \ \n    else:\n        result = text\n    \n    return {\n        'processed_text':\
+          \ result\n    }\n"
+        code_language: python3
+        desc: Web Scrape Content Processor
+        outputs:
+          processed_text:
+            children: null
+            type: string
+        selected: false
+        title: Code
+        type: code
+        variables:
+        - value_selector:
+          - '1761027331508'
+          - text
+          value_type: string
+          variable: text
+      height: 80
+      id: '1761028715927'
+      position:
+        x: 626.8372784618329
+        y: 130.8139189900127
+      positionAbsolute:
+        x: 626.8372784618329
+        y: 130.8139189900127
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 19.497448881239904
+      y: 134.83168301161948
+      zoom: 0.4944854581904707
+  rag_pipeline_variables: []
